@@ -9,6 +9,9 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+import dotenv from "dotenv";
+dotenv.config();
+
 // Configurazione multer per upload immagini profilo
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
