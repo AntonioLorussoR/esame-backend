@@ -20,6 +20,10 @@ import Team from "./models/Team.js";
 import Message from "./models/Message.js";
 
 import sendTelegramMessage from "./utils/sendTelegramMessage.js";
+
+
+
+
 dotenv.config();
 
 const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
@@ -27,6 +31,10 @@ const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
 
 const app = express();
 const server = http.createServer(app);
+
+
+app.use(express.json()); // 👈 
+
 
 // ✅ Configurazione Socket.IO con CORS
 const io = new Server(server, {
