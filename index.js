@@ -21,6 +21,7 @@ import Message from "./models/Message.js";
 
 import sendTelegramMessage from "./utils/sendTelegramMessage.js";
 
+const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
 dotenv.config();
 
 const app = express();
@@ -29,18 +30,24 @@ const server = http.createServer(app);
 // ✅ Configurazione Socket.IO con CORS
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://craftingtable-g622.vercel.app"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
+
 // ✅ Esporta Socket.IO per usarlo altrove
 export { io };
 
 // ✅ Middleware CORS e JSON
-app.use(cors({ origin: ["http://localhost:5173", "https://craftingtable-g622.vercel.app"], credentials: true }));
-app.use(express.json());
+
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
 
 // ✅ Connessione a MongoDB
 mongoose.connect(process.env.MONGO_URI)
