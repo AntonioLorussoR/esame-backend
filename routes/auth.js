@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-// 📁 Configurazione multer per upload immagini profilo
+// Configurazione multer per upload immagini profilo
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/profilePics");
@@ -22,16 +22,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// 🔐 Registrazione
+
 router.post("/register", registerUser);
 
-// 🔑 Login
+
 router.post("/login", loginUser);
 
-// 👤 Dati utente corrente
+
 router.get("/me", verifyToken, getCurrentUser);
 
-//Oauth
+
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 router.get(
@@ -46,10 +46,10 @@ router.get(
             cognomeUtente: req.user.cognomeUtente,
           },
           process.env.JWT_SECRET,
-          { expiresIn: "1d" }
+          { expiresIn: "1h" }
         );
 
-  res.redirect(`http://localhost:5173/oauth-success?token=${token}`);
+  res.redirect(`${process.env.FRONTEND_REDIRECT_URL}?token=${token}`);
 }
 
 );
