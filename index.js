@@ -29,7 +29,7 @@ const server = http.createServer(app);
 // ✅ Configurazione Socket.IO con CORS
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://craftingtable-g622.vercel.app"],
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -39,7 +39,7 @@ const io = new Server(server, {
 export { io };
 
 // ✅ Middleware CORS e JSON
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173", "https://craftingtable-g622.vercel.app"], credentials: true }));
 app.use(express.json());
 
 // ✅ Connessione a MongoDB
