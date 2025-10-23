@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Team from "../models/Team.js";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 //Recupera utente corrente
 export const getCurrentUser = async (req, res) => {
@@ -43,10 +44,10 @@ export const updateUserProfile = async (req, res) => {
   }
 };
 
-// 🖼️ Upload immagine profilo
+// Upload immagine profilo
 export const uploadProfileImage = async (req, res) => {
   try {
-    const imageUrl = `http://localhost:5000/uploads/profilePics/${req.file.filename}`;
+    const imageUrl = `${API_BASE}/uploads/profilePics/${req.file.filename}`;
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { profilePicture: imageUrl },
@@ -55,7 +56,7 @@ export const uploadProfileImage = async (req, res) => {
 
     res.json({ profilePicture: user.profilePicture });
   } catch (err) {
-    console.error("❌ Errore upload immagine:", err);
+    console.error("Errore upload immagine:", err);
     res.status(500).json({ message: "Errore durante l'upload della foto" });
   }
 };
