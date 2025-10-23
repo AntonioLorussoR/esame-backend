@@ -20,9 +20,10 @@ import Team from "./models/Team.js";
 import Message from "./models/Message.js";
 
 import sendTelegramMessage from "./utils/sendTelegramMessage.js";
+dotenv.config();
 
 const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
-dotenv.config();
+
 
 const app = express();
 const server = http.createServer(app);
