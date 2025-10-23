@@ -1,7 +1,11 @@
 import User from "../models/User.js";
 import Team from "../models/Team.js";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+import dotenv from "dotenv";
+dotenv.config();
+
+const API_BASE = process.env.API_BASE_URL;
+
 
 //Recupera utente corrente
 export const getCurrentUser = async (req, res) => {
