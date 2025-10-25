@@ -20,6 +20,7 @@ export const registerUser = async (req, res) => {
       cognomeUtente,
       email: emailPulita,
       password: hashedPassword,
+      profilePicture : null,
     });
     await newUser.save();
 
@@ -36,6 +37,7 @@ export const registerUser = async (req, res) => {
         nomeUtente: newUser.nomeUtente,
         cognomeUtente: newUser.cognomeUtente,
         email: newUser.email,
+        profilePicture : null,
       },
     });
   } catch (error) {
@@ -73,6 +75,7 @@ export const loginUser = async (req, res) => {
         nomeUtente: user.nomeUtente,
         cognomeUtente: user.cognomeUtente,
         email: user.email,
+        profilePicture : user.profilePicture,
       },
     });
   } catch (error) {
