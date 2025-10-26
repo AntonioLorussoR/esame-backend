@@ -17,7 +17,6 @@ export const getCurrentUser = async (req, res) => {
 
     res.json(utente);
   } catch (err) {
-    console.error("Errore getCurrentUser:", err);
     res.status(500).json({ message: "Errore server" });
   }
 };
@@ -43,7 +42,6 @@ export const updateUserProfile = async (req, res) => {
       city: user.city,
     });
   } catch (err) {
-    console.error("Errore aggiornamento profilo:", err);
     res.status(500).json({ message: "Errore durante l'aggiornamento del profilo" });
   }
 };
@@ -60,7 +58,6 @@ export const uploadProfileImage = async (req, res) => {
 
     res.json({ profilePicture: user.profilePicture });
   } catch (err) {
-    console.error("Errore upload immagine:", err);
     res.status(500).json({ message: "Errore durante l'upload della foto" });
   }
 };
@@ -77,7 +74,6 @@ export const removeProfilePicture = async (req, res) => {
 
     res.json({ message: "Foto profilo rimossa" });
   } catch (err) {
-    console.error("Errore rimozione foto profilo:", err);
     res.status(500).json({ message: "Errore interno del server" });
   }
 };
@@ -94,11 +90,10 @@ export const deleteAccount = async (req, res) => {
       { $pull: { members: { user: userId } } }
     );
 
-    // Elimina i team dove l'utente è l'unico admin
+    // Elimina i team dove l'utente è il creator
     await Team.deleteMany({
-      members: { $size: 1 },
       "members.0.user": userId,
-      "members.0.role": "Admin"
+      "members.0.role": "Creator"
     });
 
     // Elimina l'utente
@@ -106,7 +101,6 @@ export const deleteAccount = async (req, res) => {
 
     res.json({ message: "Account eliminato con successo" });
   } catch (err) {
-    console.error("❌ Errore eliminazione account:", err);
     res.status(500).json({ message: "Errore durante l'eliminazione dell'account" });
   }
 };
