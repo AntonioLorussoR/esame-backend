@@ -27,14 +27,14 @@ export const getTeams = async (req, res) => {
 export const createTeam = async (req, res) => {
   try {
     const { name, description } = req.body;
-    const userId = req.user?.id;
+    const userId = req.user.id;
     if (!userId) return res.status(401).json({ message: "Utente non autenticato" });
 
     const newTeam = new Team({
       name,
       description,
       accessCode: Team.generateAccessCode(),
-      members: [{ user: new mongoose.Types.ObjectId(userId), role: "Creator" }],
+      members: [{ user: userId, role: "Creator" }],
       telegramCode: Team.generateTelegramCode(),
     });
 
@@ -56,7 +56,7 @@ export const joinTeamByCode = async (req, res) => {
 
     const alreadyMember = team.members.some(m => String(m.user) === String(req.user.id));
     if (!alreadyMember) {
-      team.members.push({ user: new mongoose.Types.ObjectId(req.user.id), role: "Member" });
+      team.members.push({ user: req.user.id, role: "Member" });
       await team.save();
     }
 
@@ -66,7 +66,6 @@ export const joinTeamByCode = async (req, res) => {
     res.json(populated);
     
   } catch (err) {
-    console.error("Errore durante l'accesso al team:", err);
     res.status(500).json({ message: "Errore durante l'accesso al team" });
   }
 };
@@ -87,12 +86,11 @@ export const updateTeamDescription = async (req, res) => {
     await team.save();
     res.json({ description: team.description });
   } catch (err) {
-    console.error("Errore aggiornamento descrizione:", err);
     res.status(500).json({ message: "Errore aggiornamento descrizione" });
   }
 };
 
-// La funzione delete team è visibile solo per il creatore dello stesso, se sei Admin non compare la possibilità
+// La funzione delete team è visibile solo per il creatore dello stesso, se sei Admin non compare la possibilità (frontend)
 export const deleteTeam = async (req, res) => {
   try {
     const { teamId } = req.params;
@@ -129,7 +127,7 @@ export const makeAdmin = async (req, res) => {
     );
     if (!member) return res.status(400).json({ message: "Membro non presente nel team" });
 
-    if (member.role === "Creatore") {
+    if (member.role === "Creator") {
       return res.status(403).json({ message: "Non puoi modificare il ruolo del creatore" });
     }
 
@@ -142,7 +140,6 @@ export const makeAdmin = async (req, res) => {
 
     res.json(populated);
   } catch (err) {
-    console.error("Errore nomina admin:", err);
     res.status(500).json({ message: "Errore nomina admin" });
   }
 };
@@ -156,7 +153,6 @@ export const getPosts = async (req, res) => {
       .populate("author", "nomeUtente cognomeUtente");
     res.json(posts);
   } catch (err) {
-    console.error("Errore nel recupero dei post:", err);
     res.status(500).json({ message: "Errore nel recupero dei post" });
   }
 };
@@ -191,7 +187,9 @@ export const addPost = async (req, res) => {
 
     //Inoltro del post su Telegram, se il team è accoppiato con un gruppo Telegram
     if (team.telegramChatId) {
-      const autore = populatedPost.author?.nomeUtente || "Un membro del team";
+      const autore = populatedPost.author
+      ? `${populatedPost.author.nomeUtente} ${populatedPost.author.cognomeUtente}`
+      : "Un membro del team";
       const testoTelegram = `📌 Nuovo post sulla bacheca da ${autore}:\n${content}`;
       await sendTelegramMessage(team.telegramChatId, testoTelegram);
     } else {
@@ -200,12 +198,11 @@ export const addPost = async (req, res) => {
 
     res.status(201).json(populatedPost);
   } catch (err) {
-    console.error("❌ Errore nell'aggiunta del post:", err);
     res.status(500).json({ message: "Errore nell'aggiunta del post" });
   }
 };
 
-//Eliminazione del post, solo se hai poteri di amministratore
+//Eliminazione del post, solo se hai poteri di amministratore o superiore
 export const deletePost = async (req, res) => {
   const { teamId, postId } = req.params;
   const userId = req.user.id;
@@ -311,7 +308,6 @@ export const removeMember = async (req, res) => {
 
     res.json(updatedTeam);
   } catch (err) {
-    console.error("Errore rimozione membro:", err);
     res.status(500).json({ message: "Errore interno del server" });
   }
 };
@@ -331,7 +327,6 @@ export const updateTelegramInvite = async (req, res) => {
     await team.save();
     res.json({ message: "Link aggiornato" });
   } catch (err) {
-    console.error("Errore aggiornamento link Telegram:", err);
     res.status(500).json({ message: "Errore interno" });
   }
 };
