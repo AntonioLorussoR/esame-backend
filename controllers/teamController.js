@@ -13,7 +13,7 @@ const isAdmin = (team, userId) =>
 //Restituisce i team di cui l'utente fa parte
 export const getTeams = async (req, res) => {
   try {
-    const userId = new mongoose.Types.ObjectId(req.user.id);
+    const userId = req.user.id;
     const teams = await Team.find({ "members.user": userId })
       .populate("members.user", "nomeUtente cognomeUtente email");
     res.json(teams);
