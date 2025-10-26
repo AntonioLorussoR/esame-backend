@@ -15,11 +15,25 @@ export const getCurrentUser = async (req, res) => {
       return res.status(404).json({ message: "Utente non trovato" });
     }
 
-    res.json(utente);
+    const fullPictureUrl = utente.profilePicture
+      ? `${API_BASE}/uploads/profilePics/${utente.profilePicture.split("/").pop()}`
+      : null;
+
+    res.json({
+      id: utente._id,
+      nomeUtente: utente.nomeUtente,
+      cognomeUtente: utente.cognomeUtente,
+      email: utente.email,
+      address: utente.address,
+      cap: utente.cap,
+      city: utente.city,
+      profilePicture: fullPictureUrl,
+    });
   } catch (err) {
     res.status(500).json({ message: "Errore server" });
   }
 };
+
 
 //Aggiorna profilo
 export const updateUserProfile = async (req, res) => {
