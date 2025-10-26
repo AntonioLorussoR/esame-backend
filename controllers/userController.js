@@ -15,10 +15,6 @@ export const getCurrentUser = async (req, res) => {
       return res.status(404).json({ message: "Utente non trovato" });
     }
 
-    const fullPictureUrl = utente.profilePicture
-      ? `${API_BASE}/uploads/profilePics/${utente.profilePicture.split("/").pop()}`
-      : null;
-
     res.json({
       id: utente._id,
       nomeUtente: utente.nomeUtente,
@@ -27,13 +23,13 @@ export const getCurrentUser = async (req, res) => {
       address: utente.address,
       cap: utente.cap,
       city: utente.city,
-      profilePicture: fullPictureUrl,
+      profilePicture: utente.profilePicture || null,
     });
   } catch (err) {
+    console.error("Errore getCurrentUser:", err);
     res.status(500).json({ message: "Errore server" });
   }
 };
-
 
 //Aggiorna profilo
 export const updateUserProfile = async (req, res) => {
