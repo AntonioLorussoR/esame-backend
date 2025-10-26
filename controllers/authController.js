@@ -75,7 +75,9 @@ export const loginUser = async (req, res) => {
         nomeUtente: user.nomeUtente,
         cognomeUtente: user.cognomeUtente,
         email: user.email,
-        profilePicture : user.profilePicture,
+        profilePicture : (user.profilePicture
+        ? `${process.env.API_BASE_URL}/uploads/profilePics/${user.profilePicture}`
+        : null),
       },
     });
   } catch (error) {
