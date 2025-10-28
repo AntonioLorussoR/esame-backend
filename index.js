@@ -87,7 +87,7 @@ app.use("/api/telegram", telegramRoutes);
 // ✅ Static files
 app.use("/uploads/profilePics", express.static("uploads/profilePics", {
   setHeaders: (res) => {
-    res.set("Access-Control-Allow-Origin", "*"); // o il tuo dominio frontend specifico
+    res.set("Access-Control-Allow-Origin", "https://craftingtable-g622.vercel.app"); 
   }
 }));
 
