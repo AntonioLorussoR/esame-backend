@@ -65,7 +65,7 @@ export const uploadProfileImage = async (req, res) => {
     }
 
     const userId = req.user.id;
-    const imageUrl = req.file.filename;
+    const imageUrl = `/uploads/profilePics/${req.file.filename}`; // percorso completo
 
     const user = await User.findByIdAndUpdate(
       userId,
@@ -81,7 +81,6 @@ export const uploadProfileImage = async (req, res) => {
     res.status(500).json({ message: "Errore durante l'upload della foto" });
   }
 };
-
 
 //Elimina foto profilo
 export const removeProfilePicture = async (req, res) => {
