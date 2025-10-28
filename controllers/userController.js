@@ -59,7 +59,7 @@ export const updateUserProfile = async (req, res) => {
 // Upload immagine profilo
 export const uploadProfileImage = async (req, res) => {
   try {
-    const imageUrl = `${API_BASE}/uploads/profilePics/${req.file.filename}`;
+    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/profilePics/${req.file.filename}`;
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { profilePicture: imageUrl },
