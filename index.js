@@ -62,7 +62,7 @@ app.use("/api/telegram", telegramRoutes);
 
 // File statici con CORS
 app.use("/uploads/contentShared", express.static("uploads/contentShared"));
-app.get("/uploads/profilePics", express.static("uploads/profilePics"));
+app.use("/uploads/profilePics", express.static("uploads/profilePics"));
 
 // Socket.IO
 const io = new Server(server, {
