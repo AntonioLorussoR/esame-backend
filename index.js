@@ -25,7 +25,7 @@ import sendTelegramMessage from "./utils/sendTelegramMessage.js";
 
 dotenv.config();
 
-const allowedOrigins = process.env.FRONTEND_URL ? "https://craftingtable-g622.vercel.app";
+const allowedOrigins = ["https://craftingtable-g622.vercel.app"];
 
 const app = express();
 const server = http.createServer(app);
