@@ -15,13 +15,6 @@ export const getCurrentUser = async (req, res) => {
       return res.status(404).json({ message: "Utente non trovato" });
     }
 
-    // Se profilePicture è presente, costruisci URL assoluto dinamicamente
-    const profilePicture = utente.profilePicture
-      ? utente.profilePicture.startsWith("http")
-        ? utente.profilePicture
-        : `${req.protocol}://${req.get("host")}/uploads/profilePics/${utente.profilePicture}`
-      : null;
-
     res.json({
       id: utente._id,
       nomeUtente: utente.nomeUtente,
@@ -32,6 +25,7 @@ export const getCurrentUser = async (req, res) => {
       city: utente.city,
       profilePicture,
     });
+    
   } catch (err) {
     console.error("Errore getCurrentUser:", err);
     res.status(500).json({ message: "Errore server" });
@@ -67,7 +61,7 @@ export const updateUserProfile = async (req, res) => {
 // Upload immagine profilo
 export const uploadProfileImage = async (req, res) => {
   try {
-    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/profilePics/${req.file.filename}`;
+    const imageUrl = `https://esame-backend.onrender.com/uploads/profilePics/${req.file.filename}`;
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { profilePicture: imageUrl },
