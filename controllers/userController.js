@@ -23,7 +23,9 @@ export const getCurrentUser = async (req, res) => {
       address: utente.address,
       cap: utente.cap,
       city: utente.city,
-      profilePicture: utente.profilePicture || null
+      profilePicture: utente.profilePicture
+    ? utente.profilePicture.replace(/^http:/, 'https:')
+    : null,
     });
     
   } catch (err) {
