@@ -25,7 +25,6 @@ import sendTelegramMessage from "./utils/sendTelegramMessage.js";
 
 dotenv.config();
 
-const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
 const app = express();
 const server = http.createServer(app);
 
@@ -34,7 +33,7 @@ app.use(express.json());
 
 // Configurazione CORS
 app.use(cors({
-  origin: allowedOrigins,
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }));
 
