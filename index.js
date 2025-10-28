@@ -62,27 +62,7 @@ app.use("/api/telegram", telegramRoutes);
 
 // File statici con CORS
 app.use("/uploads/contentShared", express.static("uploads/contentShared"));
-
-// Rota sicura per foto profilo
-app.get("/api/users/:id/profile-pic", verifyToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user || !user.profilePicture) return res.status(404).send();
-
-    const filename = path.basename(user.profilePicture);
-    const filepath = path.resolve(`uploads/profilePics/${filename}`);
-
-    const ext = path.extname(filename).toLowerCase();
-    const mime = ext === ".png" ? "image/png" : "image/jpeg";
-
-    res.setHeader("Content-Type", mime);
-    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
-    res.sendFile(filepath);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send();
-  }
-});
+app.get("/uploads/profilePics", express.static("uploads/profilePics"));
 
 // Socket.IO
 const io = new Server(server, {
