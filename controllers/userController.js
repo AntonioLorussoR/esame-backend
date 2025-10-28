@@ -60,19 +60,28 @@ export const updateUserProfile = async (req, res) => {
 // Upload immagine profilo
 export const uploadProfileImage = async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "Nessun file caricato" });
+    }
+
     const userId = req.user.id;
     const imageUrl = req.file.filename;
+
     const user = await User.findByIdAndUpdate(
       userId,
       { profilePicture: imageUrl },
       { new: true }
     );
 
+    if (!user) return res.status(404).json({ message: "Utente non trovato" });
+
     res.json({ profilePicture: user.profilePicture });
   } catch (err) {
+    console.error("Errore uploadProfileImage:", err);
     res.status(500).json({ message: "Errore durante l'upload della foto" });
   }
 };
+
 
 //Elimina foto profilo
 export const removeProfilePicture = async (req, res) => {
