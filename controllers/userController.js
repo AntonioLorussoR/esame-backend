@@ -4,7 +4,7 @@ import Team from "../models/Team.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const API_BASE = process.env.API_BASE_URL;
+
 
 
 //Recupera utente corrente
