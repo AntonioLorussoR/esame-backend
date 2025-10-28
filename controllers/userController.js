@@ -23,7 +23,7 @@ export const getCurrentUser = async (req, res) => {
       address: utente.address,
       cap: utente.cap,
       city: utente.city,
-      profilePicture,
+      profilePicture: utente.profilePicture || null
     });
     
   } catch (err) {
