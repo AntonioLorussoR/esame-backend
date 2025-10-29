@@ -60,19 +60,21 @@ export const uploadProfileImage = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: "Nessun file caricato" });
 
-    const userId = req.user.id;
-    const user = await User.findById(userId);
-
+    const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ message: "Utente non trovato" });
 
-    user.profilePicture.data = req.file.buffer; // multer memoryStorage
+    if (!user.profilePicture) {
+      user.profilePicture = { data: null, contentType: "" };
+    }
+
+    user.profilePicture.data = req.file.buffer;
     user.profilePicture.contentType = req.file.mimetype;
 
     await user.save();
 
-    res.json({ message: "Foto caricata correttamente" });
+    res.json({ message: "Foto profilo aggiornata!" });
   } catch (err) {
-    console.error(err);
+    console.error("Errore upload foto:", err);
     res.status(500).json({ message: "Errore upload foto" });
   }
 };
