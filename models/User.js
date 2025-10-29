@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   address: { type: String },
   cap: { type: String },
   city: { type: String },
-  profilePicture: { type: String, default: null },
+  profilePicture: { data: Buffer, contentType: String},
   googleId: { type: String, unique: true, sparse: true },
 });
 
