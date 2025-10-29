@@ -8,19 +8,15 @@ import jwt from "jsonwebtoken";
 import session from "express-session";
 import passport from "passport";
 import path from "path";
-
 import "./passport.js";
-
 import { verifyToken } from "./middleware/authMiddleware.js";
 import userRoutes from "./routes/user.js";
 import teamRoutes from "./routes/teamRoutes.js";
 import authRoutes from "./routes/auth.js";
 import materialRoutes from "./routes/materialRoutes.js";
 import telegramRoutes from "./routes/telegram.js";
-
 import Team from "./models/Team.js";
 import Message from "./models/Message.js";
-import User from "./models/User.js"; // IMPORT MANCANTE
 import sendTelegramMessage from "./utils/sendTelegramMessage.js";
 
 dotenv.config();
