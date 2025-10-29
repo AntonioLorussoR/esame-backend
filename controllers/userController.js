@@ -5,8 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 
-
-
 //Recupera utente corrente
 export const getCurrentUser = async (req, res) => {
   try {
@@ -65,7 +63,8 @@ export const uploadProfileImage = async (req, res) => {
     }
 
     const userId = req.user.id;
-    const imageUrl = `/uploads/profilePics/${req.file.filename}`; // percorso completo
+    
+    const imageUrl = `${process.env.API_BASE_URL}/uploads/profilePics/${req.file.filename}`; // percorso completo
 
     const user = await User.findByIdAndUpdate(
       userId,
@@ -73,9 +72,10 @@ export const uploadProfileImage = async (req, res) => {
       { new: true }
     );
 
-    if (!user) return res.status(404).json({ message: "Utente non trovato" });
-
-    res.json({ profilePicture: user.profilePicture });
+     res.status(200).json({
+      message: "Foto caricata correttamente",
+      profilePicture: userId.profilePicture
+    });
   } catch (err) {
     console.error("Errore uploadProfileImage:", err);
     res.status(500).json({ message: "Errore durante l'upload della foto" });
