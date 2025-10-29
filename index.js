@@ -101,7 +101,9 @@ io.on("connection", (socket) => {
 
       const team = await Team.findById(teamId);
       if (team?.telegramChatId) {
-        const autore = populated.author?.nomeUtente || "Un membro del team";
+        const autoreNome = populated.author?.nomeUtente || "Un membro del team";
+        const autoreCognome = populated.author?.cognomeUtente;
+        const autore = `${autoreNome} ${autoreCognome}`.trim() || "Un membro del team";
         await sendTelegramMessage(team.telegramChatId, `💬 Nuovo messaggio da ${autore}:\n${content}`);
       }
     } catch (err) {
