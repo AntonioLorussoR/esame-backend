@@ -8,19 +8,19 @@ dotenv.config();
 //Recupera utente corrente
 export const getCurrentUser = async (req, res) => {
   try {
-    const utente = await User.findById(req.user.id).select("-password");
-    if (!utente) {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
       return res.status(404).json({ message: "Utente non trovato" });
     }
     res.json({
-      id: utente._id,
-      nomeUtente: utente.nomeUtente,
-      cognomeUtente: utente.cognomeUtente,
-      email: utente.email,
-      address: utente.address,
-      cap: utente.cap,
-      city: utente.city,
-      profilePicture: utente.profilePicture
+      id: user._id,
+      nomeUtente: user.nomeUtente,
+      cognomeUtente: user.cognomeUtente,
+      email: user.email,
+      address: user.address,
+      cap: user.cap,
+      city: user.city,
+      profilePicture: user.profilePicture
     });
     
   } catch (err) {
@@ -64,7 +64,7 @@ export const uploadProfileImage = async (req, res) => {
 
     const userId = req.user.id;
     
-    const imageUrl = `${process.env.API_BASE_URL}/uploads/profilePics/${req.file.filename}`; // percorso completo
+    const imageUrl = `${process.env.API_BASE_URL}/uploads/profilePics/${req.file.filename}`; 
 
     const user = await User.findByIdAndUpdate(
       userId,
