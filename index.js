@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import session from "express-session";
 import passport from "passport";
-import path from "path";
 import "./passport.js";
 import { verifyToken } from "./middleware/authMiddleware.js";
 import userRoutes from "./routes/user.js";
@@ -21,7 +20,7 @@ import sendTelegramMessage from "./utils/sendTelegramMessage.js";
 
 dotenv.config();
 
-const allowedOrigins = ["https://craftingtable-g622.vercel.app"];
+const allowedOrigins = ["https://craftingtable-g622.vercel.app", "http://localhost:5173"];
 
 const app = express();
 const server = http.createServer(app);
