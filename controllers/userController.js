@@ -74,7 +74,7 @@ export const uploadProfileImage = async (req, res) => {
 
      res.status(200).json({
       message: "Foto caricata correttamente",
-      profilePicture: userId.profilePicture
+      profilePicture: user.profilePicture
     });
   } catch (err) {
     console.error("Errore uploadProfileImage:", err);
