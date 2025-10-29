@@ -1,16 +1,7 @@
 import multer from "multer";
-import path from "path";
 
-const storage = multer.memoryStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/profilePics");
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const filename = `${req.user.id}-${Date.now()}${ext}`;
-    cb(null, filename);
-  },
-});
+// Salva temporaneamente il file in memoria per poterlo salvare su MongoDB
+const storage = multer.memoryStorage();
 
 const uploadProfilePic = multer({ storage });
 
