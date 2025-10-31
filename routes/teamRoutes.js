@@ -26,7 +26,7 @@ router.get("/", verifyToken, getTeams);
 router.post("/", verifyToken, createTeam);
 router.post("/join", verifyToken, joinTeamByCode);
 
-// 📝 Descrizione (solo admin)
+
 router.put("/:teamId/description", verifyToken, verifyTeamAdmin, updateTeamDescription);
 
 // 🔐 Admin management
