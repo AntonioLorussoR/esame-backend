@@ -95,5 +95,14 @@ router.get(
 
 );
 
+router.post("/logout", (req, res) => {
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+  });
+  res.status(200).json({ message: "Logout effettuato" });
+});
+
 
 export default router;
