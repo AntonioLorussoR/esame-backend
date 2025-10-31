@@ -37,7 +37,7 @@ router.get("/me", verifyToken, getCurrentUser);
 
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-router.get("/refresh", (req, res) => {
+/*router.get("/refresh", (req, res) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) {
     return res.status(401).json({ message: "Refresh token mancante" });
@@ -60,7 +60,7 @@ router.get("/refresh", (req, res) => {
     res.status(403).json({ message: "Refresh token non valido" });
   }
 });
-
+*/
 
 router.get(
   "/google/callback",
