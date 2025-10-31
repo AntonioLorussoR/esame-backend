@@ -17,6 +17,7 @@ import telegramRoutes from "./routes/telegram.js";
 import Team from "./models/Team.js";
 import Message from "./models/Message.js";
 import sendTelegramMessage from "./utils/sendTelegramMessage.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -24,6 +25,9 @@ const allowedOrigins = ["https://craftingtable-g622.vercel.app", "http://localho
 
 const app = express();
 const server = http.createServer(app);
+
+//Cookie Parser
+app.use(cookieParser());
 
 // Middleware JSON
 app.use(express.json());
