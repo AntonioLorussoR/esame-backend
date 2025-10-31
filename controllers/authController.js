@@ -29,6 +29,20 @@ export const registerUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+    
+    const refreshToken = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     res.status(201).json({
       message: "Registrazione completata con successo",
       token,
@@ -67,6 +81,19 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+    const refreshToken = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+    );
+    
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    
     res.status(200).json({
       message: "Login effettuato con successo",
       token,
@@ -82,4 +109,5 @@ export const loginUser = async (req, res) => {
     console.error("Errore nel login:", error);
     res.status(500).json({ message: "Errore del server" });
   }
+
 };
