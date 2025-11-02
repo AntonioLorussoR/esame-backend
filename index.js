@@ -5,7 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import session from "express-session";
+
 import passport from "passport";
 import "./passport.js";
 import { verifyToken } from "./middleware/authMiddleware.js";
