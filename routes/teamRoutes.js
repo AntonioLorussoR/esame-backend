@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import Team from "../models/Team.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { verifyTeamAdmin } from "../middleware/verifyTeamAdmin.js";
-import { deleteAccount } from "../controllers/userController.js";
+
 
 import {
   getTeams,
@@ -87,7 +87,7 @@ router.delete("/:id/leave", verifyToken, async (req, res) => {
   }
 });
 
-router.delete("/me", verifyToken, deleteAccount);
+
 router.delete("/:teamId/members/:memberId", verifyToken, verifyTeamAdmin, removeMember);
 
 router.get("/:teamId/messages", verifyToken, async (req, res) => {
