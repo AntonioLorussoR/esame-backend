@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import Team from "../models/Team.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { verifyTeamAdmin } from "../middleware/verifyTeamAdmin.js";
-import { deleteAccount } from "../controllers/userController.js";
 
 import {
   getTeams,
@@ -21,22 +20,14 @@ import {
 
 const router = express.Router();
 
-// 📦 Team base
 router.get("/", verifyToken, getTeams);
 router.post("/", verifyToken, createTeam);
 router.post("/join", verifyToken, joinTeamByCode);
-
-
 router.put("/:teamId/description", verifyToken, verifyTeamAdmin, updateTeamDescription);
-
-// 🔐 Admin management
 router.put("/:teamId/admin/:memberId", verifyToken, verifyTeamAdmin, makeAdmin);
-
-// 📮 Post (solo admin)
 router.get("/:teamId/posts", verifyToken, getPosts);
 router.post("/:teamId/posts", verifyToken, verifyTeamAdmin, addPost);
 
-// ✅ Fix: passaggio esplicito del teamId per il middleware
 router.delete(
   "/:teamId/posts/:postId",
   verifyToken,
@@ -59,7 +50,6 @@ router.delete(
   deleteTeam
 );
 
-// 🛠️ Fallback: modifica descrizione diretta (senza controllo admin)
 router.put("/:id/description", verifyToken, async (req, res) => {
   try {
     const { description } = req.body;
@@ -75,7 +65,6 @@ router.put("/:id/description", verifyToken, async (req, res) => {
   }
 });
 
-// 🚪 Abbandona team
 router.delete("/:id/leave", verifyToken, async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.user.id);
@@ -97,11 +86,7 @@ router.delete("/:id/leave", verifyToken, async (req, res) => {
   }
 });
 
-// 🧨 Elimina account personale
-router.delete("/me", verifyToken, deleteAccount);
-
 router.delete("/:teamId/members/:memberId", verifyToken, verifyTeamAdmin, removeMember);
-
 
 router.get("/:teamId/messages", verifyToken, async (req, res) => {
   try {
@@ -119,7 +104,6 @@ router.get("/:teamId/messages", verifyToken, async (req, res) => {
   }
 });
 
-//collegamento telegram
 router.post("/:id/telegram", verifyToken, async (req, res) => {
   try {
     const { chatId, telegramLink } = req.body;
@@ -130,7 +114,6 @@ router.post("/:id/telegram", verifyToken, async (req, res) => {
     team.telegramInviteLink = telegramLink;
     await team.save();
 
-    // ✅ Invio messaggio Telegram se il gruppo è collegato
     if (team.telegramChatId) {
       const message = `📢 *Nuovo annuncio nel team ${team.nome}*\n${req.body.content}\n👤 Autore: ${user.nomeUtente} ${user.cognomeUtente}`;
       await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
