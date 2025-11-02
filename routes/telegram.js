@@ -1,11 +1,10 @@
 import express from "express";
 import Team from "../models/Team.js";
 import sendTelegramMessage from "../utils/sendTelegramMessage.js";
-import { io } from "../index.js"; // Assicurati che il path sia corretto
+import { io } from "../index.js"; 
 
 const router = express.Router();
 
-// Verifica codice dal frontend
 router.post("/verify", async (req, res) => {
   const { code } = req.body;
   const team = await Team.findOne({ telegramCode: code });
@@ -13,7 +12,6 @@ router.post("/verify", async (req, res) => {
   res.json({ message: "Codice valido. Invia /accoppia nel gruppo Telegram." });
 });
 
-// Webhook Telegram
 router.post("/webhook", async (req, res) => {
   const { message } = req.body;
   if (!message || !message.text || !message.chat || !message.chat.id) {
@@ -24,7 +22,6 @@ router.post("/webhook", async (req, res) => {
   const chatTitle = message.chat.title || "Gruppo senza nome";
   const text = message.text.trim();
 
-  //Comando /accoppia
   if (text.startsWith("/accoppia")) {
     const parts = text.split(" ");
     const code = parts[1];
@@ -41,7 +38,6 @@ router.post("/webhook", async (req, res) => {
       team.telegramChatTitle = chatTitle;
       await team.save();
 
-      //Emissione evento Socket.IO
       io.to(team._id.toString()).emit("telegramLinked", {
         chatId,
         title: chatTitle,
