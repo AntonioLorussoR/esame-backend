@@ -5,7 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import session from "express-session";
+
 import passport from "passport";
 import "./passport.js";
 import { verifyToken } from "./middleware/authMiddleware.js";
@@ -43,15 +43,8 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connesso"))
   .catch(err => console.error("❌ Errore MongoDB:", err));
 
-// Sessione e Passport
-app.use(session({
-  secret: process.env.JWT_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, maxAge: 1000 * 60 * 60 },
-}));
+//Passport
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Montaggio route
 app.use("/api/auth", authRoutes);
